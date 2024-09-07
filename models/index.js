@@ -47,7 +47,7 @@ db.categoria.hasMany(db.producto);
 db.producto.belongsTo(db.categoria);
 
 
-//FALTA*************************************
+//FALTA***********************************
 //una categoria Padre puede tener muchas categorias
 //una categoria puede tener una categoria Padre
 

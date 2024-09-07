@@ -7,11 +7,11 @@ exports.obtenerTodos = (req, res) => {
 
   imagen
     .findAll({
-     /* include: [
+    /*   include: [
         {
           model: db.producto, attributes: ['id']
         }
-      ]*/
+      ] */
     })
     .then((registros) => {
       // res.send(registros);
