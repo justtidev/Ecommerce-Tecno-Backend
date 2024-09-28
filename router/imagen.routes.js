@@ -7,6 +7,7 @@ const controladorImagen = require('../controllers/imagen.controller');
 // R  Read
 Rutas.get('/', controladorImagen.obtenerTodos );
 Rutas.get('/:id', controladorImagen.obtenerUno );
+Rutas.get('/prod/:id', controladorImagen.obtenerImagenPorProd );
 // Rutas.get('/ofertas/', controladorProducto.ofertas );
 // C Create
 Rutas.post('/', controladorImagen.crear );

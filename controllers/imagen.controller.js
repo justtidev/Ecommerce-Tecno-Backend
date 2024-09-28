@@ -7,11 +7,11 @@ exports.obtenerTodos = (req, res) => {
 
   imagen
     .findAll({
-    /*   include: [
+       /* include: [
         {
           model: db.producto, attributes: ['id']
         }
-      ] */
+      ]  */
     })
     .then((registros) => {
       // res.send(registros);
@@ -39,12 +39,10 @@ exports.obtenerUno = (req, res) => {
 
   imagen
     .findOne({
+      
       where: { id: _id },
-    },
 
-
-
-    )
+    },)
     .then((registro) => {
       if (registro) {
         res.status(200).json({
@@ -72,6 +70,40 @@ exports.obtenerUno = (req, res) => {
     });
 };
 
+exports.obtenerImagenPorProd = (req, res) => {
+  // obtener el parametro id
+  const _id = req.params.id;
+  imagen.findAll({
+      where: { ProductoId: _id },
+    })
+    .then((registro) => {
+      if (registro) {
+        res.status(200).json({
+          ok: true,
+          msg: "Imagen encontrada",
+          status: 200,
+          data: registro,
+        });
+      } else {
+        res.status(404).json({
+          ok: false,
+          msg: "Imagen no encontrada",
+          status: 404,
+          data: null,
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        ok: false,
+        msg: "Error al obtener la imagen",
+        status: 500,
+        data: error,
+      });
+    });
+};
+
+
 exports.crear = (req, res) => {
   const { ubicacion, nroDeOrden, ProductoId } = req.body;
 
@@ -80,6 +112,13 @@ exports.crear = (req, res) => {
       ubicacion: ubicacion,
       nroDeOrden: nroDeOrden,
       ProductoId: ProductoId,
+    
+        /* include: [
+          {
+            
+            include: [producto.id],
+          }], */
+      
 
     })
     .then((registro) => {

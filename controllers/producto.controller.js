@@ -10,7 +10,8 @@ exports.obtenerTodos = (req, res) => {
       include: [
         {
           model: db.categoria,
-          // attributes:['descripcion']
+          // attributes:['nombre']
+          model: db.imagen 
         }
       ]
     })
@@ -40,6 +41,13 @@ exports.obtenerUno = (req, res) => {
 
   producto
     .findOne({
+      include: [
+        {
+          model: db.categoria,
+          // attributes:['descripcion']
+          model: db.imagen 
+        }
+      ],
       where: { id: _id },
     })
     .then((registro) => {
@@ -70,7 +78,7 @@ exports.obtenerUno = (req, res) => {
 };
 
 exports.crear = (req, res) => {
-  const { nombre, descripcionBreve, precioUnitario, stock, descripcionDetallada, costoProducto, CategoriumId } = req.body;
+  const { nombre, descripcionBreve, precioUnitario, stock, descripcionDetallada, costoProducto, CategoriumId, disponible } = req.body;
 
   producto
     .create({
@@ -80,7 +88,8 @@ exports.crear = (req, res) => {
       stock: stock,
       descripcionDetallada: descripcionDetallada,
       costoProducto: costoProducto,
-      CategoriumId: CategoriumId
+      CategoriumId: CategoriumId,
+      disponible: disponible,
 
     })
     .then((registro) => {
@@ -103,7 +112,7 @@ exports.crear = (req, res) => {
 
 exports.actualizar = (req, res) => {
   const _id = req.params.id;
-  const { nombre, descripcionBreve, precioUnitario, Stock, descripcionDetallada, costoProducto, CategoriumId } = req.body;
+  const { nombre, descripcionBreve, precioUnitario, Stock, descripcionDetallada, costoProducto, CategoriumId, disponible } = req.body;
   producto
     .update(
       {
@@ -113,7 +122,8 @@ exports.actualizar = (req, res) => {
         Stock: Stock,
         descripcionDetallada: descripcionDetallada,
         costoProducto: costoProducto,
-        CategoriumId: CategoriumId
+        CategoriumId: CategoriumId,
+        disponible: disponible,
 
       },
       {

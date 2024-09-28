@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
     const Categoria = sequelize.define("Categoria", {
 
 
-        descripcion: {
+        nombre: {
             type: DataTypes.STRING(),
             allowNull: true,
         },

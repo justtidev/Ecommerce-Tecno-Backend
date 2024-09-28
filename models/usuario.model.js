@@ -27,6 +27,12 @@ module.exports = (sequelize, Sequelize) => {
 
 
         },
+        rol: {
+            type: DataTypes.ENUM('Administrador', 'Cliente'),
+            allowNull: false,
+
+
+        },
 
 
     });

@@ -62,10 +62,10 @@ exports.obtenerUno = (req, res) => {
 };
 
 exports.crear = (req, res) => {
-  const { descripcion } = req.body;
+  const { nombre } = req.body;
 
   categoria.create({
-    descripcion: descripcion,
+    nombre: nombre,
 
   })
     .then((registro) => {
@@ -88,11 +88,11 @@ exports.crear = (req, res) => {
 
 exports.actualizar = (req, res) => {
   const _id = req.params.id;
-  const { descripcion } = req.body;
+  const { nombre } = req.body;
   categoria
     .update(
       {
-        descripcion: descripcion,
+        nombre: nombre,
 
       },
       {
