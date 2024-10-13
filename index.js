@@ -17,7 +17,7 @@ const db = require("./models/index");
 // para sincronizar cambios en la DB, usar:   .sync({alter:true})
 db.sequelize
  .sync()
-    //    .sync( { alter: true } )  
+     //   .sync( { alter: true } )  
   .then(() => {
     console.log("Base de datos conectada");
   })

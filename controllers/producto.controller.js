@@ -10,7 +10,7 @@ exports.obtenerTodos = (req, res) => {
       include: [
         {
           model: db.categoria,
-          // attributes:['nombre']
+         // attributes:['nombre'],
           model: db.imagen 
         }
       ]
@@ -35,6 +35,44 @@ exports.obtenerTodos = (req, res) => {
     });
 };
 
+exports.lista = (req,res) => {
+
+   const pagina = parseInt(req.query.pagina);
+  const cantidad = parseInt(req.query.cantidad);
+
+  console.log("llega a lista", pagina, cantidad)
+
+
+   producto.findAndCountAll({
+       include:[
+           {
+            model: db.categoria,
+             model: db.imagen,
+           }            
+       ], 
+       distinct: true,
+       offset: (pagina - 1) * cantidad,
+       limit: cantidad
+   })
+   .then((registros) => {
+       console.log("envia registros")
+       res.status(200).json({
+           ok: true,
+           msg: "Listado  ",
+           status: 200,
+           data: registros
+       })
+   })
+   .catch((error) => {
+       res.status(500).json({
+           ok: false,
+           msg: "Error al obtener el listado  ",
+           status: 500,
+           data: error
+       })
+   })
+}
+
 exports.obtenerUno = (req, res) => {
   // obtener el parametro id
   const _id = req.params.id;
@@ -44,7 +82,7 @@ exports.obtenerUno = (req, res) => {
       include: [
         {
           model: db.categoria,
-          // attributes:['descripcion']
+          //attributes:['nombre'],
           model: db.imagen 
         }
       ],

@@ -6,6 +6,7 @@ const controladorProducto = require('../controllers/producto.controller');
 
 // R  Read
 Rutas.get('/', controladorProducto.obtenerTodos );
+Rutas.get('/lista', controladorProducto.lista)
 Rutas.get('/:id', controladorProducto.obtenerUno );
 // Rutas.get('/ofertas/', controladorProducto.ofertas );
 // C Create
