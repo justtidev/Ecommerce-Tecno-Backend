@@ -22,13 +22,13 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         contraseña: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.STRING(200),
             allowNull: false,
 
 
         },
         rol: {
-            type: DataTypes.ENUM('Administrador', 'Cliente'),
+            type: DataTypes.STRING(13),
             allowNull: false,
 
 

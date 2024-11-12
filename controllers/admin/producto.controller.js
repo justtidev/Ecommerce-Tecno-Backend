@@ -17,6 +17,7 @@ exports.obtenerTodos = (req, res) => {
     })
     .then((registros) => {
       // res.send(registros);
+      res.json({ producto, message: `Acceso concedido a ${req.user?.username}` });
 
       res.status(200).json({
         ok: true,
