@@ -6,7 +6,7 @@ const controladorCupones = require('../controllers/cupones.controller');
 
 // R  Read
 Rutas.get('/', controladorCupones.obtenerTodos );
-Rutas.get('/:id', controladorCupones.obtenerUno );
+Rutas.get('/:codigo', controladorCupones.obtenerUno );
 // Rutas.get('/ofertas/', controladorProducto.ofertas );
 // C Create
 Rutas.post('/', controladorCupones.crear );

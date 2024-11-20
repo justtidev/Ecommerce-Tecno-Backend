@@ -29,10 +29,10 @@ exports.obtenerTodos = (req, res) => {
 
 exports.obtenerUno = (req, res) => {
   // obtener el parametro id
-  const _id = req.params.id;
+  const _codigo = req.params.codigo;
 
   cupones.findOne({
-    where: { id: _id },
+    where: { codigo: _codigo },
   })
     .then((registro) => {
       if (registro) {
