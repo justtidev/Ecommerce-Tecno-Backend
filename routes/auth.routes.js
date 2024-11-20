@@ -1,5 +1,5 @@
 const express = require('express');
-const { login, refreshToken, register } = require('../controllers/auth.controller');
+const { login, register } = require('../controllers/auth.controller');
 
 const Rutas = express.Router();
 
@@ -10,7 +10,7 @@ Rutas.post('/register', register);
 Rutas.post('/login', login);
 
 // paso 3 - cuando se requiera, se puede generar un nuevo token
-Rutas.post('/refresh', refreshToken);
+/* Rutas.post('/refresh', refreshToken); */
 
 module.exports = Rutas;
 

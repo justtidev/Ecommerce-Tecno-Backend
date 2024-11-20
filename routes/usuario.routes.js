@@ -5,15 +5,15 @@ const controladorUsuario = require('../controllers/usuario.controller');
 // CRUD
 
 // R  Read
-Rutas.get('/', controladorUsuario.obtenerTodos );
-Rutas.get('/:id', controladorUsuario.obtenerUno );
+Rutas.get('/', controladorUsuario.obtenerUsuarios );
+Rutas.get('/:id', controladorUsuario.obtenerUsuarioById );
 // Rutas.get('/ofertas/', controladorProducto.ofertas );
 // C Create
-Rutas.post('/', controladorUsuario.crear );
+Rutas.post('/', controladorUsuario.crearUsuario );
 // U Update
-Rutas.put('/:id', controladorUsuario.actualizar );
+Rutas.put('/:id', controladorUsuario.actualizarUsuario );
 // D Delete
-Rutas.delete('/:id', controladorUsuario.eliminar );
-
+Rutas.delete('/:id', controladorUsuario.eliminarUsuario );
+Rutas.post('/', controladorUsuario.loginUsuario );
 module.exports = Rutas;
 

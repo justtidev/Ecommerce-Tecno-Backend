@@ -11,7 +11,8 @@ exports.obtenerTodos = (req, res) => {
         {
           model: db.categoria,
          // attributes:['nombre'],
-         model: db.imagen 
+         model: db.imagen ,
+        
         }
       ]
     })
@@ -41,13 +42,19 @@ exports.lista = (req,res) => {
   const cantidad = parseInt(req.query.cantidad);
 const texto = req.query.filtro;
   const categoria = parseInt(req.query.categoria);
-  const rangoPrecio = req.query.rangoPrecio 
+  const minPrecio = (req.query.minPrecio);
+  const maxPrecio =(req.query.maxPrecio);
 
+  console.log("Preciomin", minPrecio, maxPrecio )
+  console.log("Categoria", categoria )
+  
  
-  let whereFiltro={};
+
+
+let whereFiltro={};
 
   if ((texto && texto.length > 0) || (categoria && categoria != 0 ) 
-    || (rangoPrecio && rangoPrecio.length > 1)
+   || (minPrecio && minPrecio !=0) || ( maxPrecio && maxPrecio !=0 ) 
     ) 
     {
 
@@ -60,7 +67,8 @@ const texto = req.query.filtro;
         nombre: { [Op.like]: '%'+ texto +'%' },  // cambiar "nombre" por el campo de texto a buscar
         }
     )
-    }
+    
+    };
 
     if (categoria && categoria > 0) {
       // aca vamos a agregar el filtro de categorias
@@ -68,22 +76,36 @@ const texto = req.query.filtro;
 
       whereFiltro[Op.and].push({
         CategoriumId: categoria   // cambiar categoriaId por el campo de categorias a buscar
-    });
+    })
 
-    }
-    console.log("llega a lista", pagina,cantidad, texto, categoria, )
-
-    if (rangoPrecio && rangoPrecio.length > 1) {
-      const rangoPrecioVector = rangoPrecio.split(",");
+    };
+    console.log("llega a lista", whereFiltro, pagina,cantidad, texto, categoria, )
+  
+    if (minPrecio > 0 && maxPrecio  == 0 || !maxPrecio ) {
+ 
       whereFiltro[Op.and].push({
-        precioUnitario: {[Op.between]:[parseInt(rangoPrecioVector[0]),parseInt(rangoPrecioVector[1])]},
-      });
-      console.log('Vector', rangoPrecioVector)
-      
-    } 
+       
+        precioUnitario: {[Op.gte]:minPrecio}
+      })
+    }; 
      
-  }
-
+       if (maxPrecio > 0 && minPrecio  == 0 || !minPrecio ) {
+ 
+        whereFiltro[Op.and].push({
+         
+          precioUnitario: {[Op.lte]:maxPrecio}
+        })
+      }; 
+      if (maxPrecio > 0 && minPrecio > 0 || !minPrecio || !maxPrecio){
+      whereFiltro[Op.and].push({
+        precioUnitario: {[Op.between]:[(minPrecio),(maxPrecio)]}, 
+      }) 
+    
+    console.log('Wherefiltro',whereFiltro)
+  } 
+}
+  
+  
 
    producto.findAndCountAll({
      where: whereFiltro,   
@@ -94,7 +116,9 @@ const texto = req.query.filtro;
             } ,
             { 
               model: db.imagen,
-            }
+
+            },
+            
        ],  
       distinct: true,
        offset: (pagina - 1) * cantidad,
@@ -128,9 +152,14 @@ exports.obtenerUno = (req, res) => {
       include: [
         {
           model: db.categoria,
-          //attributes:['nombre'],
-          model: db.imagen 
-        }
+          attributes:['nombre']},
+          
+          {model: db.imagen,
+          }
+         
+
+        
+
       ],
       where: { id: _id },
     })

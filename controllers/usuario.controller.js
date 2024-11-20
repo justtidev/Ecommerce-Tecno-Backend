@@ -1,4 +1,183 @@
-const { where } = require("sequelize");
+const db = require("../models/index");
+//const bcrypt = require('bcrypt');
+
+async function crearUsuario(req, res) {
+    const usuario = req.body;
+
+    try {
+        const crearUsuario = await db.usuario.create(
+            {
+                nombre: usuario.nombre,
+                apellido: usuario.apellido,
+                email: usuario.email,
+                contraseña: usuario.contraseña,
+                rol: usuario.rol,
+                
+            });
+
+        res.status(201).json({
+            ok: true,
+            status: 201,
+            message: "Usuario Creado",
+            mensaje: crearUsuario,
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: error.message,
+        });
+    }
+}
+
+async function obtenerUsuarios(req, res) {
+    try {
+        const usuarios = await db.usuario.findAll();
+        res.status(200).json({
+            ok: true,
+            status: 200,
+            data: usuarios,
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: error.message,
+        });
+    }
+}
+
+async function obtenerUsuarioById(req, res) {
+    const id = req.params.id;
+
+    try {
+        const usuario = await db.usuario.findOne({
+            where: { id: id },
+        });
+
+        res.status(200).json({
+            ok: true,
+            status: 200,
+            data: usuario,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: error.message,
+        });
+    }
+}
+
+async function actualizarUsuario(req, res) {
+    const id = req.params.id;
+    const usuario = req.body;
+
+    try {
+        const actualizaUsuario = await db.usuario.update(
+            {
+                nombre: usuario.nombre,
+                apellido: usuario.apellido,
+                email: usuario.email,
+                contraseña: usuario.clave,
+                rol: usuario.rol,
+                
+            },
+            {
+                where: { id: id },
+            }
+        );
+
+        res.status(200).json({
+            ok: true,
+            status: 200,
+            body: actualizaUsuario,
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: error.message,
+        });
+    }
+}
+
+async function eliminarUsuario(req, res) {
+    const id = req.params.id;
+
+    try {
+        const eliminaUsuario = await db.usuario.destroy({
+            where: { id: id },
+        });
+
+        res.status(204).json({
+            ok: true,
+            status: 204,
+            data: eliminaUsuario,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: error.message,
+        });
+    }
+}
+
+
+async function loginUsuario(req, res) {
+    const { email, contraseña } = req.body;
+
+    try {
+        const usuario = await db.usuario.findOne({ where: { email } });
+
+        // Verificar si el usuario existe y si la clave coincide
+        if (!usuario || usuario.contraseña !== contraseña) {
+            return res.status(401).json({
+                ok: false,
+                message: "Credenciales incorrectas"
+            });
+        }
+
+        // Si las credenciales son correctas
+        res.status(200).json({
+            ok: true,
+            message: "Inicio de sesión exitoso",
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                rol: usuario.rol
+            }
+        });
+
+    } catch (error) {
+        // Manejo de errores
+        res.status(500).json({
+            ok: false,
+            message: error.message
+        });
+    }
+}
+
+
+module.exports = {
+    crearUsuario,
+    obtenerUsuarios,
+    obtenerUsuarioById,
+    actualizarUsuario,
+    eliminarUsuario,
+    loginUsuario,
+};
+
+
+
+
+/* const { where } = require("sequelize");
 const db = require("../models/index");
 const usuario = db.usuario;
 
@@ -148,8 +327,6 @@ exports.eliminar = (req, res) => {
         data: error,
       });
     });
-};
+}; */
 
-/* exports.ofertas = (req, res) => {
-    res.send('Hola soy el root de usuario');
-} */
+

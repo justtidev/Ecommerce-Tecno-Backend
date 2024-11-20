@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { where } = require("sequelize");
+const { where, Op} = require("sequelize");
 const db = require("../models/index");
 const usuario = db.usuario;
 
@@ -10,17 +10,7 @@ const users = [
   { email: "pepe", contraseña: "$2b$10$JREc27BzgLkJUpfGSKPskOroLhzL1F1iSSb14u.8IzUf11YpA04iu" }, // Contraseña ya hasheada con bcrypt
 ]; */
 
-// Verifica el usuario y la contraseña
-async function verifyUser(email, contraseña) {
-  console.log("llega a verifyUser", email, contraseña);
-  const user = usuario.findAll((u) => u.email == email);
-  console.log("user encontrado", user);
-  if (!user?.email) return null;
 
-  const validContraseña = await bcrypt.compare(contraseña, user.contraseña);
-  console.log("validContraseña::", validContraseña);
-  return validContraseña ? user : null;
-}
 
 // Genera un token de acceso
 function generateAccessToken(data) {
@@ -30,7 +20,7 @@ function generateAccessToken(data) {
  
 
 // Genera un token de acceso
-async function registerUser(usuario, contraseña) {
+async function registerUser(nombre, apellido,email, contraseña, rol) {
   // Verifica si el usuario ya existe
   const existingUser = await usuario.findAll({
     where:{
@@ -40,17 +30,21 @@ async function registerUser(usuario, contraseña) {
   if (existingUser) {
     throw new Error("El usuario ya existe")
   };
-
+console.log(email)
   // Encripta la contraseña
   const hashedContraseña = await bcrypt.hash(contraseña, 10);
 
   // Crea y guarda el nuevo usuario
-  const newUser = { email, contraseña: hashedContraseña };
+
+  const newUser = {nombre, apellido, email, contraseña: hashedContraseña, rol };
   usuario.create({
-    data:{
+    
+      nombre:nombre,
+      apellido:apellido,
       email: email,
-      contraseña: hashedContraseña
-    }
+      contraseña: hashedContraseña,
+      rol:rol
+    
   })
 
   console.log("newUser:", newUser);
@@ -59,7 +53,7 @@ async function registerUser(usuario, contraseña) {
 }
 
 module.exports = {
-  verifyUser,
+ /*  verifyUsuario, */
   generateAccessToken,
   registerUser,
 };

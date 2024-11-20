@@ -33,7 +33,7 @@ db.producto = require("./producto.model")(sequelize, Sequelize);
 db.usuario = require("./usuario.model")(sequelize, Sequelize);
 db.categoria = require("./categoria.model")(sequelize, Sequelize);
 db.imagen = require("./imagen.model")(sequelize, Sequelize);
-
+db.cupones  = require("./cupones.model")(sequelize, Sequelize);
 // relaciones entre modelos
 //relacion 1 a muchos
 //un producto puede tener muchas imagenes
@@ -45,6 +45,7 @@ db.imagen.belongsTo(db.producto);
 db.categoria.hasMany(db.producto);
 //un producto tiene una categoria
 db.producto.belongsTo(db.categoria);
+
 
 
 //FALTA***********************************
